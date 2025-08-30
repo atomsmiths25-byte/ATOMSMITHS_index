@@ -1554,7 +1554,7 @@
                   </div>
                   <div>
                     <label for="department">Password</label>
-                    <input id="department" name="department" type="password" placeholder="Enter Your Password">
+                    <input id="password" name="department" type="password" placeholder="Enter Your Password">
                   </div>
                   <div>
                     <label for="year">Year</label>
@@ -1887,43 +1887,66 @@
             revealOnScroll();
         }, 100);
         // --- Join Form Handler ---
+// --- Join Form Handler ---
 const joinForm = document.getElementById('join-form');
 if (joinForm) {
-  joinForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const statusEl = document.getElementById('join-status');
-    const btn = document.getElementById('join-submit');
-    const formData = {
-      name: document.getElementById('name').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      department: document.getElementById('department').value.trim(),
-      year: document.getElementById('year').value,
-      interests: document.getElementById('interests').value.trim()
-    };
-    statusEl.textContent = 'Submitting...';
-    btn.disabled = true;
+    joinForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const statusEl = document.getElementById('join-status');
+        const btn = document.getElementById('join-submit');
+        
+        // Corrected to grab the new password field's value
+        const formData = {
+            name: document.getElementById('name').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            department: document.getElementById('department').value.trim(),
+            password: document.getElementById('password').value.trim(), // Added password field
+            year: document.getElementById('year').value,
+            interests: document.getElementById('interests').value.trim()
+        };
+        
+        statusEl.textContent = 'Submitting...';
+        btn.disabled = true;
 
-    try {
-      const res = await fetch('/api/join', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-      const data = await res.json();
-      if (res.ok && data.ok) {
-        statusEl.textContent = '✅ Application received. Check your email soon!';
-        joinForm.reset();
-      } else {
-        statusEl.textContent = '❌ ' + (data.error || 'Something went wrong.');
-      }
-    } catch (err) {
-      statusEl.textContent = '❌ Network error. Please try again.';
-    } finally {
-      btn.disabled = false;
-    }
-  });
+        try {
+            // This is a placeholder for your backend API endpoint.
+            // Since '/api/join' doesn't exist, this will fail.
+            // The logic below simulates a successful submission for testing.
+            
+            // --- SIMULATED RESPONSE (Remove for production) ---
+            await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate network delay
+            const isSuccess = Math.random() > 0.2; // Simulate 80% success rate
+            
+            if (isSuccess) {
+                statusEl.textContent = '✅ Application received. Check your email soon!';
+                joinForm.reset();
+            } else {
+                statusEl.textContent = '❌ Simulated error. Please try again.';
+            }
+            // --- END SIMULATION ---
+            
+            /* --- REAL API CALL (Use this in production) ---
+            const res = await fetch('/api/join', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            const data = await res.json();
+            if (res.ok && data.ok) {
+                statusEl.textContent = '✅ Application received. Check your email soon!';
+                joinForm.reset();
+            } else {
+                statusEl.textContent = '❌ ' + (data.error || 'Something went wrong.');
+            }
+            */
+        } catch (err) {
+            // This error will trigger because the API endpoint doesn't exist.
+            statusEl.textContent = '❌ Network error. Is the server running?';
+        } finally {
+            btn.disabled = false;
+        }
+    });
 }
-
     </script>
 </body>
 </html>
