@@ -1609,6 +1609,15 @@
     </footer>
 
     <script>
+        async function fetchPost(id) {
+  const res = await fetch(`/.netlify/functions/get-post?id=${id}`);
+  const data = await res.json();
+  console.log("Post:", data);
+  return data;
+}
+
+fetchPost(1);
+
     
         // Enhanced navigation functionality
         const navbar = document.getElementById('navbar');
